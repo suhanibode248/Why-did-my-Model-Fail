@@ -30,10 +30,10 @@ ML models are widely used but may not always perform as expected. Understanding 
 
 This project identifies:
 
-Overfitting
-Underfitting
-Data imbalance
-Poor feature selection
+-Overfitting
+-Underfitting
+-Data imbalance
+-Poor feature selection
 
 ---
 
@@ -42,8 +42,8 @@ Traditional metrics like accuracy do not fully explain model behavior.
 
 Tools such as:
 
-SHAP,
-LIME
+-SHAP
+-LIME
 
 help improve interpretability. Research highlights the importance of data quality, feature engineering, and proper validation.
 
