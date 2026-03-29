@@ -42,7 +42,7 @@ Traditional metrics like accuracy do not fully explain model behavior.
 
 Tools such as:
 
-SHAP
+SHAP,
 LIME
 
 help improve interpretability. Research highlights the importance of data quality, feature engineering, and proper validation.
