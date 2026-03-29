@@ -146,7 +146,5 @@ Overall, it contributes to building more accurate and reliable ML models.
 [2] Scikit-learn Documentation – https://scikit-learn.org  
 [3] Towards Data Science – Model Evaluation Articles  
 
----
 
-## ⭐ Final Note  
-*Always learning and improving models step by step 🚀*
+
