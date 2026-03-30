@@ -1,31 +1,31 @@
-# 📌 Why Did My Model Fail?  
+#  Why Did My Model Fail?  
 ### A Machine Learning Failure Analysis Tool  
 
 ---
 
-## 👩‍💻 Author  
+##  Author  
 **Suhani Bode**  
 
 ---
 
-## 🏫 Affiliation  
+##  Affiliation  
  Computer science and engineering (Data Science)
 
 ---
 
-## 📅 Date  
+##  Date  
 March 2026  
 
 ---
 
-## 📄 Abstract  
+##  Abstract  
 Machine learning models often fail due to poor data quality, overfitting, underfitting, and weak feature selection.
 
 This project analyzes a trained model and dataset to identify failure causes using metrics like accuracy, precision, recall, and visualizations such as confusion matrix and learning curves. It also suggests improvements like preprocessing, feature engineering, and hyperparameter tuning.
 
 ---
 
-## 📖 Introduction  
+##  Introduction  
 ML models are widely used but may not always perform as expected. Understanding failure is essential for improvement.
 
 This project identifies:
@@ -37,7 +37,7 @@ Poor feature selection
 
 ---
 
-## 📚 Literature Review  
+##  Literature Review  
 Traditional metrics like accuracy do not fully explain model behavior.
 
 Tools such as:
@@ -49,7 +49,7 @@ help improve interpretability. Research highlights the importance of data qualit
 
 ---
 
-## ⚙️ Methodology  
+##  Methodology  
 The system follows a structured pipeline:  
 
 1. Data preprocessing (handling missing values, scaling, encoding)  
@@ -71,7 +71,7 @@ The system follows a structured pipeline:
 
 ---
 
-## 💻 Implementation  
+##  Implementation  
 
 ### 🔹 Programming Language  
 - Python  
@@ -89,27 +89,27 @@ The system follows a structured pipeline:
 
 ---
 
-## 📊 Results and Discussion  
+##  Results and Discussion  
 The system successfully identified key reasons for model failure:  
 
-- ❌ Overfitting (high training accuracy, low testing accuracy)  
-- ❌ Underfitting (low overall accuracy)  
-- ⚠️ Data imbalance  
-- ⚠️ Weak or irrelevant features  
+-  Overfitting (high training accuracy, low testing accuracy)  
+-  Underfitting (low overall accuracy)  
+-  Data imbalance  
+-  Weak or irrelevant features  
 
-### 📈 Insights  
+###  Insights  
 - Visualizations improved understanding of model behavior  
 - Learning curves showed training patterns  
 - Confusion matrix highlighted prediction errors  
 
-### ✅ Suggestions Provided  
+###  Suggestions Provided  
 - Improve data quality  
 - Apply feature engineering  
 - Perform hyperparameter tuning  
 
 ---
 
-## ⚠️ Limitations  
+##  Limitations  
 - Limited to basic ML models  
 - No extensive deep learning support  
 - Suggestions are general  
@@ -118,7 +118,7 @@ The system successfully identified key reasons for model failure:
 
 ---
 
-## 🚀 Future Scope  
+##  Future Scope  
 - Add deep learning support  
 - Integrate SHAP & LIME  
 - Build a web-based dashboard  
@@ -127,7 +127,7 @@ The system successfully identified key reasons for model failure:
 
 ---
 
-## ✅ Conclusion  
+##  Conclusion  
 This project provides a practical solution for understanding why machine learning models fail.  
 
 It helps identify root causes using:  
@@ -141,7 +141,7 @@ Overall, it contributes to building more accurate and reliable ML models.
 
 ---
 
-## 📚 References  
+##  References  
 [1] Aurélien Géron, *Hands-On Machine Learning with Scikit-Learn*, 2019  
 [2] Scikit-learn Documentation – https://scikit-learn.org  
 [3] Towards Data Science – Model Evaluation Articles  
