@@ -73,17 +73,17 @@ The system follows a structured pipeline:
 
 ##  Implementation  
 
-### 🔹 Programming Language  
+###  Programming Language  
 - Python  
 
-### 🔹 Libraries  
+###  Libraries  
 - Pandas  
 - NumPy  
 - Matplotlib  
 - Seaborn  
 - Scikit-learn  
 
-### 🔹 Tools  
+###  Tools  
 - Jupyter Notebook / VS Code  
 - GitHub  
 
