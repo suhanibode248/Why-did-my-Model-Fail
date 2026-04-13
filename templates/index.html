@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Model Analyzer PRO</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            margin:0;
+            font-family:'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #020617);
+            color:white;
+        }
+
+        .slide {
+            display:none;
+            min-height:100vh;
+            text-align:center;
+            padding-top:60px;
+        }
+
+        .active {
+            display:block;
+        }
+
+        .navbar {
+            background:#020617;
+            padding:15px;
+            font-size:22px;
+            font-weight:bold;
+            text-align:center;
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            padding:25px;
+            margin:20px auto;
+            width:70%;
+            border-radius:16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+        input, button {
+            padding:12px;
+            margin:10px;
+            border-radius:8px;
+            border:none;
+        }
+
+        button {
+            background: linear-gradient(45deg, #38bdf8, #0ea5e9);
+            color:white;
+            cursor:pointer;
+        }
+
+        table {
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        th {
+            background:#38bdf8;
+            color:black;
+        }
+
+        th, td {
+            padding:12px;
+            border-bottom:1px solid #334155;
+        }
+
+        #loading {
+            display:none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">🚀 AI Model Analyzer PRO</div>
+
+<!-- LOGIN -->
+<div id="loginSlide" class="slide active">
+    <h1>🔐 Login</h1>
+    <div class="card">
+        <input type="text" id="username" placeholder="Username"><br>
+        <input type="password" id="password" placeholder="Password"><br>
+        <button onclick="login()">Login</button>
+    </div>
+</div>
+
+<!-- INPUT -->
+<div id="inputSlide" class="slide">
+    <h1>📂 Upload Dataset</h1>
+
+    <form method="POST" enctype="multipart/form-data" onsubmit="showLoader()">
+        <input type="file" name="file" required><br>
+        <button type="submit">Analyze</button>
+    </form>
+
+    <p id="loading">⏳ Analyzing dataset...</p>
+</div>
+
+<!-- OUTPUT -->
+<div id="outputSlide" class="slide">
+
+{% if result %}
+
+<h1>📊 Results</h1>
+
+<!-- 🔙 BACK BUTTON -->
+<div style="margin:20px;">
+    <button onclick="goBack()">⬅ Back to Upload</button>
+</div>
+
+<div class="card">
+    <h2>🚀 Final Decision</h2>
+    <p>{{ result.final_score }}%</p>
+    <p>{{ result.final_status }}</p>
+</div>
+
+<div class="card">
+    <h2>🏆 Best Model</h2>
+    <p>{{ result.best_model }}</p>
+    <p>Confidence: {{ result.confidence }}%</p>
+</div>
+
+<div class="card">
+    <h2>📊 Dataset Quality</h2>
+    <p>{{ result.dataset_quality }} ({{ result.dataset_quality_score }}/100)</p>
+</div>
+
+<div class="card">
+    <h2>⚠️ Class Balance</h2>
+    <p>{{ result.imbalance_status }}</p>
+</div>
+
+<div class="card">
+    <h2>📁 Dataset Info</h2>
+    <p>Rows: {{ result.dataset_info.rows }}</p>
+    <p>Columns: {{ result.dataset_info.columns }}</p>
+    <p>Missing: {{ result.dataset_info.missing }}</p>
+</div>
+
+<div class="card">
+    <h2>📊 Model Comparison</h2>
+    <table>
+        <tr>
+            <th>Model</th>
+            <th>Acc</th>
+            <th>Prec</th>
+            <th>Recall</th>
+            <th>F1</th>
+        </tr>
+
+        {% for name, m in result.models.items() %}
+        <tr>
+            <td>{{ name }}</td>
+            <td>{{ "%.3f"|format(m.acc) }}</td>
+            <td>{{ "%.3f"|format(m.precision) }}</td>
+            <td>{{ "%.3f"|format(m.recall) }}</td>
+            <td>{{ "%.3f"|format(m.f1) }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<div class="card">
+    <h2>📈 Feature Importance</h2>
+    <canvas id="featureChart"></canvas>
+</div>
+
+<div class="card">
+    <h2>📊 Accuracy Comparison</h2>
+    <canvas id="accChart"></canvas>
+</div>
+
+<div class="card">
+    <h2>📉 Confusion Matrix</h2>
+    <pre>{{ result.confusion_matrix }}</pre>
+</div>
+
+<div class="card">
+    <h2>📈 ROC Curve (AUC: {{ result.roc_auc }})</h2>
+    <canvas id="rocChart"></canvas>
+</div>
+
+<div class="card">
+    <h2>🔁 Model Validation</h2>
+    <p>Cross Validation: {{ result.cv_score }}</p>
+    <p>Train Accuracy: {{ result.train_acc }}</p>
+    <p>Test Accuracy: {{ result.test_acc }}</p>
+</div>
+
+<script>
+const models = {{ result.models | tojson | safe }};
+const names = Object.keys(models);
+const accs = names.map(n => models[n].acc);
+
+new Chart(document.getElementById("accChart"), {
+    type: "bar",
+    data: { labels: names, datasets: [{ label: "Accuracy", data: accs }] }
+});
+
+let imp = {{ result.feature_importance | tojson | safe }};
+if (!imp || imp.length === 0) imp = [0,0,0];
+
+new Chart(document.getElementById("featureChart"), {
+    type: "bar",
+    data: {
+        labels: imp.map((_, i) => "F" + (i+1)),
+        datasets: [{ label: "Importance", data: imp }]
+    }
+});
+
+new Chart(document.getElementById("rocChart"), {
+    type: "line",
+    data: {
+        labels: {{ result.roc_fpr | tojson | safe }},
+        datasets: [{
+            label: "ROC Curve",
+            data: {{ result.roc_tpr | tojson | safe }},
+            fill:false
+        }]
+    }
+});
+</script>
+
+{% endif %}
+</div>
+
+<script>
+function login() {
+    let u = document.getElementById("username").value;
+    let p = document.getElementById("password").value;
+
+    if(u === "admin" && p === "1234") {
+        document.getElementById("loginSlide").classList.remove("active");
+        document.getElementById("inputSlide").classList.add("active");
+    } else {
+        alert("Invalid Login");
+    }
+}
+
+function showLoader() {
+    document.getElementById("loading").style.display = "block";
+}
+
+// 🔥 BACK FUNCTION
+function goBack() {
+    document.getElementById("outputSlide").classList.remove("active");
+    document.getElementById("inputSlide").classList.add("active");
+}
+
+{% if result %}
+document.getElementById("loginSlide").classList.remove("active");
+document.getElementById("inputSlide").classList.remove("active");
+document.getElementById("outputSlide").classList.add("active");
+{% endif %}
+</script>
+
+</body>
+</html>
